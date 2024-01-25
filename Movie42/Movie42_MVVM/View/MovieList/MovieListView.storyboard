@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="iyB-g5-PyI">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Movie Tab View Controller-->
+        <scene sceneID="LUi-wQ-nNX">
+            <objects>
+                <tabBarController storyboardIdentifier="MovieListViewController" id="iyB-g5-PyI" customClass="MovieTabViewController" customModule="Movie42_MVVM" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="6wn-ZX-oBt">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" name="lightpink"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="Yp1-hl-TmB" kind="relationship" relationship="viewControllers" id="O3E-G6-Qel"/>
+                        <segue destination="zZ0-aJ-zyr" kind="relationship" relationship="viewControllers" id="ccl-KG-tsI"/>
+                        <segue destination="r9K-KI-bTK" kind="relationship" relationship="viewControllers" id="IaS-32-aB5"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Cal-b4-cwq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1904" y="-639"/>
+        </scene>
+        <!--MyPageView-->
+        <scene sceneID="evV-8q-32c">
+            <objects>
+                <viewControllerPlaceholder storyboardName="MyPageView" referencedIdentifier="MyPageViewController" id="r9K-KI-bTK" userLabel="MyPageView" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="My Page" image="pencil" catalog="system" id="KBq-8G-w4O"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hOr-B8-TIh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1109" y="-518"/>
+        </scene>
+        <!--MovieSearchView-->
+        <scene sceneID="lpp-CL-9Wi">
+            <objects>
+                <viewControllerPlaceholder storyboardName="MovieSearchView" referencedIdentifier="MovieSearchViewController" id="zZ0-aJ-zyr" userLabel="MovieSearchView" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Search" image="magnifyingglass" catalog="system" id="ho7-Bw-eJ7"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="j24-rd-MhI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1109" y="-639"/>
+        </scene>
+        <!--MovieScreenView-->
+        <scene sceneID="KYN-Od-BSF">
+            <objects>
+                <viewControllerPlaceholder storyboardName="MovieScreenView" referencedIdentifier="MovieScreenViewController" id="Yp1-hl-TmB" userLabel="MovieScreenView" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="List" image="list.bullet" catalog="system" id="rXZ-9I-0uW"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fef-iU-2ME" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1109" y="-749"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="list.bullet" catalog="system" width="128" height="87"/>
+        <image name="magnifyingglass" catalog="system" width="128" height="117"/>
+        <image name="pencil" catalog="system" width="128" height="113"/>
+        <namedColor name="lightpink">
+            <color red="0.97254901960784312" green="0.90980392156862744" blue="0.93333333333333335" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
