@@ -14,9 +14,9 @@ class SignupViewController: UIViewController {
     }
 
     private func setUpBinders() {
-        viewModel.error.bind { [weak self] error in
-            if let error = error {
-                print(error)
+        viewModel.success.bind { [weak self] success in
+            if let success = success {
+                print(success)
             } else {
                 // 회원가입 성공 시 처리 다시 로그인페이지로(error=nil이므로)
                 self?.goToEntryPage()
