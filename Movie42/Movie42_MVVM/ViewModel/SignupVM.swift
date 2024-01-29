@@ -6,6 +6,11 @@ final class SignupViewModel {
     
     func signup(name: String, nickname: String, id: String, password: String) {
         
+        guard !name.isEmpty, !nickname.isEmpty, !id.isEmpty, !password.isEmpty else {
+            self.success.value = "빈칸 존재"
+            return
+        }
+        
         var users = UserDefaultManager.shared.datas
         
         //중복된 아이디가 있을 경우 경고창 띄우기
@@ -19,9 +24,9 @@ final class SignupViewModel {
         
         users.append(newUser)
         UserDefaultManager.shared.datas = users
-
+        
         print("로그인 성공")
-
+        
         // 회원가입 성공 시 error를 nil로 업데이트
         self.success.value = nil
     }
