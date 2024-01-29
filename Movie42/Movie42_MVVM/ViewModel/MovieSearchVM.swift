@@ -13,8 +13,8 @@ class MovieSearchViewModel {
     // 화면 업데이트를 위한 클로저 타입 프로퍼티
     var updateMovie: (() -> Void)?
     
-    // 검색 미리보기 업데이트를 위한 클로저 타입 프로퍼티
-    var updatePreviewLabel: (() -> Void)?
+    // 연관검색어 업데이트를 위한 클로저 타입 프로퍼티
+    var updatePreviewTableCell: (() -> Void)?
     
     // 전체 영화 목록을 저장하는 Set
     private var allMovies: Set<Movie> = [] {
@@ -32,11 +32,11 @@ class MovieSearchViewModel {
         }
     }
     
-    // 현재 검색어에 대한 미리보기 텍스트를 저장하는 배열
+    // 현재 검색어에 대한 연관검색어 텍스트를 저장하는 배열
     private var previewTitles: [String] = [] {
         didSet {
-            // 미리보기 텍스트가 업데이트되면 클로저 호출
-            updatePreviewLabel?()
+            // 연관검색어 텍스트가 업데이트되면 클로저 호출
+            updatePreviewTableCell?()
         }
     }
     
@@ -44,6 +44,21 @@ class MovieSearchViewModel {
     init() {
         // 페이지 진입 topRated 데이터 불러옴
         fetchData(for: .topRated) {}
+    }
+    
+    // currentData가 private이기때문에 외부에서 접근하기위해 메서드 추가
+    // 현재 데이터에 접근할 수 있는 메서드 추가
+    func getCurrentData() -> [Movie] {
+        print("+++++++++++++++++++++++getCurrentData++++++++ \(currentData)")
+        return currentData
+    }
+    
+    // 현재 데이터를 설정하는 메서드
+    func setCurrentData(_ data: [Movie]) {
+        currentData = data
+        // updateMovie 클로저 호출
+        updateMovie?()
+        print("+++++++++++++++++++++++setCurrentData++++++++ \(currentData)")
     }
     
     // 특정 카테고리에 대한 데이터를 불러오는 메서드
@@ -74,70 +89,63 @@ class MovieSearchViewModel {
                 self.updatePreviewTitles(with: query)
                 // 이전 미리보기 텍스트 초기화
                 self.previewTitles = []
+                // 현재 데이터를 설정하는 메서드 호출
+                self.setCurrentData(Array(self.allMovies))
             }
         } else {
             // 검색어가 있을 경우 모든 카테고리의 데이터를 가져옴
+            let categories: [MovieCategory] = [.nowPlaying, .popular, .topRated, .upcoming]
             let group = DispatchGroup()
-            
-            group.enter()
-            fetchData(for: .nowPlaying) {
-                group.leave()
+
+            categories.forEach { category in
+                group.enter()
+                fetchData(for: category) {
+                    group.leave()
+                }
             }
-            
-            group.enter()
-            fetchData(for: .popular) {
-                group.leave()
-            }
-            
-            group.enter()
-            fetchData(for: .topRated) {
-                group.leave()
-            }
-            
-            group.enter()
-            fetchData(for: .upcoming) {
-                group.leave()
-            }
-            
+
             // 모든 데이터를 가져온 후에 필터링 및 업데이트
             group.notify(queue: .main) {
                 self.currentData = self.allMovies.filter { movie in
                     let titleMatch = movie.title.localizedCaseInsensitiveContains(query)
                     let originalTitleMatch = movie.originalTitle.localizedCaseInsensitiveContains(query)
-                    
+
                     // 한글인 경우 title로, 그 외의 경우 originalTitle로 검색
                     return titleMatch || originalTitleMatch
                 }
-                
+
                 // 검색 미리보기 라벨 업데이트
                 self.updatePreviewTitles(with: query)
                 // 이전 미리보기 텍스트 초기화
                 self.previewTitles = []
+
+                // 현재 데이터를 설정하는 메서드 호출
+                self.setCurrentData(self.currentData)
             }
         }
     }
     
-    // 현재 검색어에 대한 미리보기 텍스트를 가져오는 메서드
+    // 현재 검색어에 대한 연관검색어 텍스트를 가져오는 메서드
     func getPreviewTitles() -> [String] {
         return previewTitles
     }
     
-    // 검색 미리보기 텍스트 업데이트
+    // 검색 연관검색어 업데이트
     func updatePreviewTitles(with searchText: String) {
         if searchText.isEmpty {
-            // 검색어가 비어있다면 미리보기 텍스트 제거
+            // 검색어가 비어있다면 연관검색어 제거
             previewTitles = []
         } else {
-            // 검색어가 있을 경우 해당 검색어에 대한 미리보기 텍스트 생성 및 업데이트
+            // 검색어가 있을 경우 해당 검색어에 대한 연관검색어 텍스트 생성 및 업데이트
             previewTitles = generatePreviewText(for: searchText)
         }
-        // 미리보기 라벨 업데이트 클로저 호출
-        updatePreviewLabel?()
+        // 연관검색어 업데이트 클로저 호출
+        updatePreviewTableCell?()
     }
     
-    // 검색어에 대한 미리보기 텍스트를 생성하는 메서드
+    // 검색어에 대한 연관검색어 텍스트를 생성하는 메서드
     private func generatePreviewText(for searchText: String) -> [String] {
-        // 검색어에 대한 미리보기 텍스트를 생성하고 반환하는 로직
+        // 검색어에 대한 연관검색어 텍스트를 생성하고 반환하는 로직
         let filteredTitles = allMovies
             .compactMap { movie -> String? in
                 if searchText.isEmpty {
